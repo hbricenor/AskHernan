@@ -5,9 +5,9 @@ This section contains SQL examples demonstrating reporting, analytics, data vali
 ## Current Examples
 
 ### Example 1
-Inventory Analysis Query
+[Inventory Analysis Query](inventory-analysis.md)
 
-Status: Coming Soon
+Supply Chain inventory visibility and replenishment planning.
 
 ### Example 2
 Department Headcount Report
