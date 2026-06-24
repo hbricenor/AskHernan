@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Inventory Analysis Query - Ask Hernan</title>
+    <link rel="stylesheet" href="../../../css/style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <div class="navbar">
+        <a href="../../../index.html">Home</a>
+        <a href="../../../about.html">About</a>
+        <a href="../../../resume.html">Resume</a>
+        <a href="../../../portfolio.html" class="active">Portfolio</a>
+        <a href="../../../contact.html">Contact</a>
+    </div>
+
+    <h1>Inventory Analysis Query</h1>
+
+    <h2>Supply Chain Analytics Example</h2>
+
+    <hr>
+
+    <h2>Business Scenario</h2>
+
+    <p>
+        A Supply Chain team requires visibility into inventory levels
+        across warehouses to identify low-stock items, support
+        replenishment planning, and improve inventory management.
+    </p>
+
+    <hr>
+
+    <h2>Objective</h2>
+
+    <p>
+        Provide current inventory balances by product and vendor,
+        including quantities on hand and quantities committed to
+        customer orders.
+    </p>
+
+    <hr>
+
+    <h2>Sample SQL</h2>
+
+    <pre>
+SELECT
+    VEND_ITEM.VEND_ITEM_ID,
+    VEND_ITEM.VENDOR_NUM,
+    VENDOR.VEND_NAME,
+    VEND_ITEM.ITEM_NUM,
+    SUM(ITEM_W.ON_HAND) AS ON_HAND,
+    SUM(INV_SHP_L.TO_ALLOC_QTY) AS ON_SALE_QTY
+FROM ...
+GROUP BY ...
+ORDER BY VEND_ITEM.VENDOR_NUM,
+         VEND_ITEM.ITEM_NUM;
+    </pre>
+
+    <p>
+        Note: Table names, identifiers, and business-specific details
+        have been sanitized for portfolio purposes.
+    </p>
+
+    <hr>
+
+    <h2>Business Value</h2>
+
+    <ul>
+        <li>Improves inventory visibility</li>
+        <li>Supports replenishment decisions</li>
+        <li>Reduces stockout risk</li>
+        <li>Supports purchasing and planning activities</li>
+        <li>Provides actionable supply chain insights</li>
+    </ul>
+
+    <hr>
+
+    <p>
+        <a href="../index.html">Return to SQL Examples</a>
+    </p>
+
+    <p>
+        <a href="../../index.html">Return to Oracle SQL & PL/SQL Portfolio</a>
+    </p>
+
+    <p>
+        <a href="../../../portfolio.html">Return to Ask Hernan Portfolio</a>
+    </p>
+
+</div>
+
+</body>
+</html>
+
+
