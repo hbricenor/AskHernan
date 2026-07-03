@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PL/SQL Reference - FIFA Dashboard</title>
+    <link rel="stylesheet" href="../../../../css/style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <div class="navbar">
+        <a href="../../../../index.html">Home</a>
+        <a href="../../../../about.html">About</a>
+        <a href="../../../../resume.html">Resume</a>
+        <a href="../../../../portfolio.html" class="active">Portfolio</a>
+        <a href="../../../../contact.html">Contact</a>
+    </div>
+
+    <h1>PL/SQL Reference</h1>
+
+    <h2>FIFA World Cup Analytics Dashboard</h2>
+
+    <p>
+        This section documents PL/SQL business logic used in the FIFA
+        World Cup Analytics Dashboard built with Oracle APEX.
+        The package encapsulates calculations, KPIs, and reusable
+        database logic for tournament analytics.
+    </p>
+
+    <hr>
+
+    <h2>PL/SQL Package</h2>
+
+    <h3>PKG_FIFA_STATS</h3>
+
+    <p>
+        Core PL/SQL package responsible for generating FIFA analytics,
+        including match statistics, goal calculations, and KPI summaries.
+    </p>
+
+    <hr>
+
+    <h2>Package Overview</h2>
+
+    <ul>
+        <li>Encapsulates business logic for FIFA analytics</li>
+        <li>Centralizes KPI calculations</li>
+        <li>Supports Oracle APEX dashboards and reports</li>
+        <li>Improves code reusability and maintainability</li>
+    </ul>
+
+    <hr>
+
+    <h2>Key Procedures (Conceptual)</h2>
+
+    <h3>1. Calculate Total Goals</h3>
+
+<pre>
+FUNCTION get_total_goals RETURN NUMBER
+IS
+    v_total NUMBER;
+BEGIN
+    SELECT SUM(HOME_GOALS + AWAY_GOALS)
+    INTO v_total
+    FROM MATCHES;
+
+    RETURN v_total;
+END;
+</pre>
+
+    <hr>
+
+    <h3>2. Matches by Team</h3>
+
+<pre>
+FUNCTION get_matches_by_team(p_team_id NUMBER) RETURN NUMBER
+IS
+    v_count NUMBER;
+BEGIN
+    SELECT COUNT(*)
+    INTO v_count
+    FROM MATCHES
+    WHERE HOME_TEAM_ID = p_team_id
+       OR AWAY_TEAM_ID = p_team_id;
+
+    RETURN v_count;
+END;
+</pre>
+
+    <hr>
+
+    <h3>3. Goals by Match</h3>
+
+<pre>
+FUNCTION get_match_goals(p_match_id NUMBER) RETURN NUMBER
+IS
+    v_goals NUMBER;
+BEGIN
+    SELECT (HOME_GOALS + AWAY_GOALS)
+    INTO v_goals
+    FROM MATCHES
+    WHERE MATCH_ID = p_match_id;
+
+    RETURN v_goals;
+END;
+</pre>
+
+    <hr>
+
+    <h2>Business Value</h2>
+
+    <ul>
+        <li>Centralizes analytical business logic</li>
+        <li>Reduces duplication in SQL queries</li>
+        <li>Improves performance and maintainability</li>
+        <li>Enables scalable Oracle APEX integration</li>
+    </ul>
+
+    <hr>
+
+    <p>
+        <a href="../index.html">Return to SQL Reference</a>
+    </p>
+
+</div>
+
+</body>
+</html>
+
+
+
+
+
