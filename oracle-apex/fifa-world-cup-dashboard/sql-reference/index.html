@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SQL Reference - FIFA Dashboard</title>
+    <link rel="stylesheet" href="../../../css/style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <div class="navbar">
+        <a href="../../../index.html">Home</a>
+        <a href="../../../about.html">About</a>
+        <a href="../../../resume.html">Resume</a>
+        <a href="../../../portfolio.html" class="active">Portfolio</a>
+        <a href="../../../contact.html">Contact</a>
+    </div>
+
+    <h1>SQL Reference</h1>
+
+    <h2>FIFA World Cup Analytics Dashboard</h2>
+
+    <p>
+        This section contains SQL queries used in the Oracle APEX FIFA
+        World Cup Analytics Dashboard. These queries support dashboards,
+        interactive reports, and business analytics functionality.
+    </p>
+
+    <hr>
+
+    <h2>Core Tables</h2>
+
+    <ul>
+        <li>TEAM</li>
+        <li>MATCHES</li>
+        <li>STADIUM</li>
+    </ul>
+
+    <hr>
+
+    <h2>Key SQL Queries</h2>
+
+    <h3>1. Match Schedule Query</h3>
+
+    <p>
+        Retrieves match schedule including teams, stadium, date,
+        and round information.
+    </p>
+
+<pre>
+SELECT 
+    MATCH_ID,
+    MATCH_DATE,
+    HOME_TEAM_ID,
+    AWAY_TEAM_ID,
+    STADIUM_ID,
+    HOME_GOALS,
+    AWAY_GOALS,
+    ROUND_NAME
+FROM MATCHES
+ORDER BY MATCH_DATE, MATCH_ID;
+</pre>
+
+    <hr>
+
+    <h3>2. Total Goals per Match</h3>
+
+    <p>
+        Calculates total goals scored in each match.
+    </p>
+
+<pre>
+SELECT 
+    MATCH_ID,
+    (HOME_GOALS + AWAY_GOALS) AS TOTAL_GOALS
+FROM MATCHES;
+</pre>
+
+    <hr>
+
+    <h3>3. Goals by Team (Home + Away)</h3>
+
+    <p>
+        Aggregates total goals scored by each team.
+    </p>
+
+<pre>
+SELECT 
+    TEAM_ID,
+    SUM(HOME_GOALS + AWAY_GOALS) AS TOTAL_GOALS
+FROM MATCHES
+GROUP BY TEAM_ID;
+</pre>
+
+    <hr>
+
+    <h3>4. Matches per Stadium</h3>
+
+    <p>
+        Counts number of matches played in each stadium.
+    </p>
+
+<pre>
+SELECT 
+    STADIUM_ID,
+    COUNT(*) AS TOTAL_MATCHES
+FROM MATCHES
+GROUP BY STADIUM_ID;
+</pre>
+
+    <hr>
+
+    <h2>Business Value</h2>
+
+    <ul>
+        <li>Supports executive dashboards in Oracle APEX</li>
+        <li>Enables tournament analytics and KPIs</li>
+        <li>Demonstrates Oracle SQL reporting capability</li>
+        <li>Provides reusable queries for BI tools</li>
+    </ul>
+
+    <hr>
+
+    <p>
+        <a href="../index.html">Return to FIFA World Cup Analytics Dashboard</a>
+    </p>
+
+</div>
+
+</body>
+</html>
+
+
+
+
+
