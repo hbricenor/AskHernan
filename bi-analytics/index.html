@@ -1,1 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Power BI & Cognos Analytics Portfolio - Ask Hernan</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="navbar">
+            <a href="../index.html">Home</a>
+            <a href="../about.html">About</a>
+            <a href="../resume.html">Resume</a>
+            <a href="../portfolio.html" class="active">Portfolio</a>
+            <a href="../achievement.html">Achievements</a>
+            <a href="../contact.html">Contact</a>
+        </div>
+
+        <h1>Power BI Executive Supply Chain Dashboard</h1>
+        <h2>Business Intelligence, Inventory &amp; Order Performance</h2>
+
+        <!-- 1. Project Overview -->
+        <section>
+            <h2>1. Project Overview</h2>
+            <p>
+                This project demonstrates how operational supply chain data can be
+                transformed into an interactive Power BI dashboard for executive
+                reporting and business analysis. The dashboard brings together
+                inventory, order, warehouse, and shipment information to provide
+                visibility into key operational measures.
+            </p>
+            <p>
+                The report includes KPI cards, interactive visualizations, a
+                replenishment monitoring table, and slicers that allow users to
+                explore the information by warehouse, product category, and order
+                date.
+            </p>
+            <p><strong>Data:</strong> Synthetic supply chain data created for portfolio demonstration purposes.</p>
+        </section>
+
+        <!-- 2. Business Objectives -->
+        <section>
+            <h2>2. Business Objectives</h2>
+            <p>The dashboard is designed to help business users answer questions such as:</p>
+            <ul>
+                <li>What is the overall inventory value across warehouses?</li>
+                <li>How many orders are open or shipped?</li>
+                <li>How is order activity changing over time?</li>
+                <li>Which products have inventory below their reorder points?</li>
+                <li>How do inventory and order measures vary by warehouse and product category?</li>
+            </ul>
+        </section>
+
+        <!-- 3. Data Model -->
+        <section>
+            <h2>3. Data Sources &amp; Data Model</h2>
+            <p>
+                The Power BI model uses seven tables organized into dimension and
+                fact structures:
+            </p>
+            <ul>
+                <li><strong>Dimensions:</strong> DimProduct, DimWarehouse, DimSupplier, and DimCustomer.</li>
+                <li><strong>Facts:</strong> FactInventory, FactOrders, and FactShipments.</li>
+            </ul>
+            <p>
+                Relationships connect the operational fact tables to the relevant
+                descriptive dimensions, supporting analysis across products,
+                warehouses, customers, suppliers, and order activity.
+            </p>
+            <p>
+                The model uses active relationships with single-direction filtering
+                to support consistent report interactions.
+            </p>
+        </section>
+
+        <!-- 4. KPIs and DAX -->
+        <section>
+            <h2>4. Key Performance Indicators &amp; DAX Measures</h2>
+            <p>
+                The report uses DAX measures to calculate key supply chain metrics
+                dynamically in response to report filters.
+            </p>
+
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>KPI / Measure</th>
+                            <th>Business Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Total Inventory Value</td>
+                            <td>Monitor the value of inventory across the selected scope.</td>
+                        </tr>
+                        <tr>
+                            <td>Total Order Value</td>
+                            <td>Measure the monetary value of order activity.</td>
+                        </tr>
+                        <tr>
+                            <td>Total Orders</td>
+                            <td>Track the number of distinct orders.</td>
+                        </tr>
+                        <tr>
+                            <td>Open Orders</td>
+                            <td>Monitor orders with an Open status.</td>
+                        </tr>
+                        <tr>
+                            <td>Shipped Orders</td>
+                            <td>Track orders with a Shipped status.</td>
+                        </tr>
+                        <tr>
+                            <td>Low Stock Products</td>
+                            <td>Identify products with on-hand quantity below the reorder point.</td>
+                        </tr>
+                        <tr>
+                            <td>Total Units on Hand</td>
+                            <td>Monitor inventory quantities.</td>
+                        </tr>
+                        <tr>
+                            <td>Total Shipped Units</td>
+                            <td>Measure shipped quantity.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 5. Executive Dashboard -->
+        <section>
+            <h2>5. Executive Dashboard</h2>
+            <p>
+                The executive overview combines KPI cards and visualizations to
+                provide a consolidated view of supply chain performance.
+            </p>
+
+            <!-- Replace this filename with the actual dashboard screenshot filename. -->
+            <p style="text-align:center;">
+                <img src="../assets/images/REPLACE_WITH_POWERBI_DASHBOARD_SCREENSHOT.png"
+                     alt="Power BI executive supply chain dashboard"
+                     width="1000"
+                     style="max-width:100%; height:auto;">
+            </p>
+
+            <h3>Dashboard Components</h3>
+            <ul>
+                <li><strong>KPI Cards:</strong> Inventory value, order value, order counts, low-stock products, and inventory/shipment quantities.</li>
+                <li><strong>Inventory Value by Warehouse:</strong> Compares inventory value across warehouse locations.</li>
+                <li><strong>Order Status Distribution:</strong> Displays the distribution of orders by status.</li>
+                <li><strong>Monthly Order Trends:</strong> Shows order activity over time.</li>
+                <li><strong>Inventory Units by Product:</strong> Compares inventory quantities across products.</li>
+                <li><strong>Inventory Detail &amp; Replenishment Monitoring:</strong> Provides product-level inventory detail to help identify replenishment needs.</li>
+            </ul>
+        </section>
+
+        <!-- 6. Interactive Analysis -->
+        <section>
+            <h2>6. Interactive Analysis &amp; Filtering</h2>
+            <p>
+                Report users can interact with the dashboard through slicers for:
+            </p>
+            <ul>
+                <li>Warehouse</li>
+                <li>Product Category</li>
+                <li>Order Date</li>
+            </ul>
+            <p>
+                These filters allow users to narrow the reporting context and explore
+                the related KPIs and visualizations without changing the underlying
+                report design.
+            </p>
+
+            <!-- Replace this filename with the actual Power BI interface screenshot filename. -->
+            <p style="text-align:center;">
+                <img src="../assets/images/REPLACE_WITH_POWERBI_INTERFACE_SCREENSHOT.png"
+                     alt="Power BI report authoring interface showing report visuals and model fields"
+                     width="1000"
+                     style="max-width:100%; height:auto;">
+            </p>
+        </section>
+
+        <!-- 7. Data Analysis and Business Use -->
+        <section>
+            <h2>7. Business Analysis &amp; Decision Support</h2>
+            <p>
+                The dashboard provides a starting point for reviewing inventory
+                positions, monitoring order activity, comparing warehouse inventory,
+                and identifying products that may require replenishment attention.
+            </p>
+            <ul>
+                <li>Review inventory value and stock levels across warehouses.</li>
+                <li>Monitor open and shipped order activity.</li>
+                <li>Explore monthly order trends.</li>
+                <li>Identify products below their reorder points.</li>
+                <li>Use warehouse, category, and date filters to investigate selected business areas.</li>
+            </ul>
+        </section>
+
+        <!-- 8. Technical Implementation -->
+        <section>
+            <h2>8. Technical Implementation</h2>
+            <ul>
+                <li><strong>Platform:</strong> Microsoft Power BI Desktop.</li>
+                <li><strong>Data Modeling:</strong> Dimension and fact tables with defined relationships.</li>
+                <li><strong>Calculations:</strong> DAX measures for inventory, orders, and shipment metrics.</li>
+                <li><strong>Visualizations:</strong> KPI cards, column and bar charts, donut chart, line chart, and detail table.</li>
+                <li><strong>Interactivity:</strong> Report slicers for warehouse, product category, and order date.</li>
+            </ul>
+        </section>
+
+        <!-- 9. Business Value -->
+        <section>
+            <h2>9. Business Value</h2>
+            <ul>
+                <li>Consolidates key supply chain indicators into an executive-level view.</li>
+                <li>Supports inventory and replenishment monitoring.</li>
+                <li>Improves visibility into order status and trends.</li>
+                <li>Enables interactive analysis across warehouses, product categories, and dates.</li>
+                <li>Demonstrates how business data can be presented to support operational decisions.</li>
+            </ul>
+        </section>
+
+        <section>
+            <p><strong>Technologies:</strong> Power BI Desktop, DAX, Data Modeling, KPI Reporting, Data Visualization.</p>
+            <p><strong>Portfolio Demonstration:</strong> Synthetic Supply Chain Data</p>
+            <p style="text-align:center; margin-top:30px;">
+                <a href="../portfolio.html">Return to Portfolio</a>
+            </p>
+        </section>
+
+    </div>
+
+</body>
+</html>
+
+
+
 
