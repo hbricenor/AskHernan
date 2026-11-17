@@ -1,1 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Supply Chain Analytics portfolio project covering inventory, orders, shipments, PySpark data quality, Delta tables, Medallion architecture, and analytical data modeling.">
+    <title>Supply Chain Analytics - Ask Hernan</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <a href="../index.html">Home</a>
+            <a href="../about.html">About</a>
+            <a href="../resume.html">Resume</a>
+            <a href="../portfolio.html">Portfolio</a>
+            <a href="../achievement.html">Achievements</a>
+            <a href="../contact.html">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="page-header">
+        <div class="container">
+            <h1>End-to-End Supply Chain Analytics Solution</h1>
+            <p>Inventory, Orders &amp; Shipment Analytics</p>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- 1. Project Overview -->
+        <section>
+            <h2>1. Project Overview</h2>
+            <p>
+                This project demonstrates an end-to-end analytical data solution using
+                inventory, order, and shipment datasets. The implementation applies
+                PySpark transformations and Delta tables within a Medallion-style
+                architecture to organize operational data into structured,
+                analytics-ready datasets.
+            </p>
+            <p>
+                The solution focuses on data quality, consistent business attributes,
+                and dimensional modeling to support supply chain visibility and
+                operational analysis.
+            </p>
+        </section>
+
+        <!-- 2. Business Requirements -->
+        <section>
+            <h2>2. Business Requirements</h2>
+            <p>
+                Supply chain teams need reliable information across inventory,
+                customer orders, and warehouse shipments. This solution organizes
+                those data domains to support questions such as:
+            </p>
+            <ul>
+                <li><strong>Inventory:</strong> What quantities are on hand, and which items are below their reorder points?</li>
+                <li><strong>Orders:</strong> What order quantities and values are being processed, and what is the current order status?</li>
+                <li><strong>Shipments:</strong> Which warehouse shipments are represented in the operational data?</li>
+                <li><strong>Data quality:</strong> Are dates, quantities, customer information, and warehouse identifiers valid and consistent?</li>
+                <li><strong>Analysis:</strong> How can operational records be organized to support reporting and business analysis?</li>
+            </ul>
+        </section>
+
+        <!-- 3. Data Sources -->
+        <section>
+            <h2>3. Data Sources</h2>
+            <p>
+                The solution uses three operational CSV source files:
+            </p>
+            <ul>
+                <li><strong>Inventory:</strong> SKU, warehouse, category, quantity on hand, reorder point, and update date.</li>
+                <li><strong>Orders:</strong> Order identifier, customer, order date, quantity, unit price, and status.</li>
+                <li><strong>Shipments:</strong> Shipment records, warehouse code, and shipment date.</li>
+            </ul>
+            <p>
+                The source files are ingested into the Bronze layer, preserving source
+                values while adding ingestion timestamp and source-file metadata.
+            </p>
+            <p style="text-align:center;">
+                <img src="../assets/images/mde_input_output.png"
+                     alt="Supply chain source files and data outputs"
+                     width="900"
+                     style="max-width:100%; height:auto;">
+            </p>
+        </section>
+
+        <!-- 4. Solution Architecture -->
+        <section>
+            <h2>4. Solution Architecture — Medallion Architecture</h2>
+            <p>
+                The data is organized into three logical layers. Each layer has a
+                distinct role in moving operational source data toward structured
+                analytical datasets.
+            </p>
+
+            <div class="architecture-flow">
+                <div class="architecture-layer bronze">
+                    <h3>Bronze — Raw Ingestion</h3>
+                    <p>
+                        Loads the inventory, orders, and shipments CSV files into
+                        Delta tables. Adds ingestion timestamp and source-file
+                        metadata while retaining the original source values.
+                    </p>
+                </div>
+                <div class="architecture-arrow">↓</div>
+                <div class="architecture-layer silver">
+                    <h3>Silver — Cleansing &amp; Validation</h3>
+                    <p>
+                        Standardizes dates and warehouse codes, removes duplicate
+                        order records, applies data-quality rules, and separates
+                        rejected order and shipment records for review.
+                    </p>
+                </div>
+                <div class="architecture-arrow">↓</div>
+                <div class="architecture-layer gold">
+                    <h3>Gold — Analytical Data Model</h3>
+                    <p>
+                        Creates customer, warehouse, and date dimensions together
+                        with order and inventory fact tables for analytical use.
+                    </p>
+                </div>
+            </div>
+
+            <p style="text-align:center;">
+                <img src="../assets/images/mde_med_bronze.png"
+                     alt="Bronze layer implementation"
+                     width="900"
+                     style="max-width:100%; height:auto;">
+            </p>
+            <p style="text-align:center;">
+                <img src="../assets/images/mde_med_silver.png"
+                     alt="Silver layer implementation"
+                     width="900"
+                     style="max-width:100%; height:auto;">
+            </p>
+            <p style="text-align:center;">
+                <img src="../assets/images/mde_med_gold.png"
+                     alt="Gold layer implementation"
+                     width="900"
+                     style="max-width:100%; height:auto;">
+            </p>
+        </section>
+
+        <!-- 5. Data Transformation -->
+        <section>
+            <h2>5. Data Transformation &amp; Quality Controls</h2>
+
+            <h3>Bronze — Source Ingestion</h3>
+            <ul>
+                <li>Reads the three source CSV files with headers and schema inference.</li>
+                <li>Writes the source datasets as Delta tables: <code>bronze_orders</code>, <code>bronze_shipments</code>, and <code>bronze_inventory</code>.</li>
+                <li>Adds <code>_ingest_ts</code> and <code>_source_file</code> metadata columns.</li>
+            </ul>
+
+            <h3>Silver — Data Cleansing and Validation</h3>
+            <ul>
+                <li>Standardizes order dates from multiple incoming date formats.</li>
+                <li>Flags non-positive order quantities and missing customer names.</li>
+                <li>Removes duplicate order records using order and transaction attributes.</li>
+                <li>Writes valid order records to <code>silver_orders</code> and rejected records to <code>silver_orders_rejected</code>.</li>
+                <li>Normalizes shipment warehouse codes and validates their format; rejected records are written separately.</li>
+                <li>Flags negative inventory quantities and identifies inventory below its reorder point.</li>
+            </ul>
+
+            <h3>Gold — Dimensional Modeling</h3>
+            <ul>
+                <li>Builds customer, warehouse, and date dimensions.</li>
+                <li>Creates an order fact table at order-line grain.</li>
+                <li>Creates an inventory snapshot fact table at SKU-by-warehouse grain.</li>
+                <li>Stores the resulting analytical structures as Delta tables.</li>
+            </ul>
+
+            <p style="text-align:center;">
+                <img src="../assets/images/mde_pipelines.png"
+                     alt="Data pipeline implementation evidence"
+                     width="900"
+                     style="max-width:100%; height:auto;">
+            </p>
+        </section>
+
+        <!-- 6. Analytical Data Model -->
+        <section>
+            <h2>6. Analytical Data Model</h2>
+            <p>
+                The Gold layer organizes the processed data into fact and dimension
+                tables. This structure separates measurable business activity from
+                descriptive attributes used to analyze that activity.
+            </p>
+
+            <h3>Dimension Tables</h3>
+            <ul>
+                <li><code>gold_dim_customer</code> — customer key and customer name.</li>
+                <li><code>gold_dim_warehouse</code> — warehouse key and warehouse code.</li>
+                <li><code>gold_dim_date</code> — date key, date, year, month, month name, and quarter.</li>
+            </ul>
+
+            <h3>Fact Tables</h3>
+            <ul>
+                <li>
+                    <code>gold_fact_orders</code> — one row per order line, including
+                    order identifier, customer key, date key, quantity, unit price,
+                    line total, and status.
+                </li>
+                <li>
+                    <code>gold_fact_inventory</code> — one row per SKU per warehouse,
+                    including category, quantity on hand, reorder point, and
+                    below-reorder-point indicator.
+                </li>
+            </ul>
+
+            <p>
+                These structures provide a foundation for analyzing order activity,
+                inventory levels, customer activity, and warehouse-level inventory.
+                The supplied Gold implementation does not create a shipment fact
+                table; shipment data is currently used in Silver processing and
+                date-dimension generation.
+            </p>
+
+            <p style="text-align:center;">
+                <img src="../assets/images/mde_catalog.png"
+                     alt="Data catalog showing project data objects"
+                     width="900"
+                     style="max-width:100%; height:auto;">
+            </p>
+        </section>
+
+        <!-- 7. KPIs -->
+        <section>
+            <h2>7. Supply Chain KPIs &amp; Business Metrics</h2>
+            <p>
+                The following metrics illustrate how the analytical model can
+                support supply chain reporting. They are business metric definitions
+                and potential reporting measures, not a claim that every KPI was
+                calculated in the supplied PySpark implementation.
+            </p>
+
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>Business Definition</th>
+                            <th>Analytical Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Inventory on Hand</td>
+                            <td>Sum of inventory quantities on hand.</td>
+                            <td>Monitor stock availability.</td>
+                        </tr>
+                        <tr>
+                            <td>Items Below Reorder Point</td>
+                            <td>Count of SKU-warehouse records where quantity on hand is below the reorder point.</td>
+                            <td>Identify potential replenishment needs.</td>
+                        </tr>
+                        <tr>
+                            <td>Order Quantity</td>
+                            <td>Sum of quantities across order lines.</td>
+                            <td>Understand order demand and volume.</td>
+                        </tr>
+                        <tr>
+                            <td>Order Value</td>
+                            <td>Sum of order-line totals (quantity multiplied by unit price).</td>
+                            <td>Monitor the monetary value of order activity.</td>
+                        </tr>
+                        <tr>
+                            <td>Orders by Status</td>
+                            <td>Count of orders or order lines grouped by status.</td>
+                            <td>Monitor order processing activity.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>
+                Shipment volume and on-time delivery can also be useful supply chain
+                measures when the relevant shipment quantity, promised-date, and
+                delivery-date fields are available and included in the reporting
+                model.
+            </p>
+        </section>
+
+        <!-- 8. Implementation Evidence -->
+        <section>
+            <h2>8. Implementation Evidence</h2>
+            <p>
+                The following screenshots document the project environment, data
+                catalog, Medallion layers, and pipeline-related implementation
+                evidence.
+            </p>
+            <p style="text-align:center;">
+                <img src="../assets/images/mde_workspace.png"
+                     alt="Data engineering workspace"
+                     width="900"
+                     style="max-width:100%; height:auto;">
+            </p>
+        </section>
+
+        <!-- 9. Orchestration Design -->
+        <section>
+            <h2>9. Pipeline Orchestration Design</h2>
+            <p>
+                A sequential orchestration pattern can coordinate the Bronze,
+                Silver, and Gold processing stages. Each downstream activity should
+                run only after the preceding stage completes successfully, helping
+                prevent incomplete upstream processing from flowing into analytical
+                tables.
+            </p>
+            <div class="pipeline-flow">
+                <div class="pipeline-step">Scheduled trigger</div>
+                <div class="architecture-arrow">↓</div>
+                <div class="pipeline-step">Bronze ingestion notebook</div>
+                <div class="architecture-arrow">↓ On success</div>
+                <div class="pipeline-step">Silver transformation notebook</div>
+                <div class="architecture-arrow">↓ On success</div>
+                <div class="pipeline-step">Gold dimensional model notebook</div>
+                <div class="architecture-arrow">↓</div>
+                <div class="pipeline-step">Analytics / reporting layer</div>
+            </div>
+            <p>
+                This sequence represents the documented orchestration design.
+                The supplied notes describe configuring it in Microsoft Fabric;
+                they do not establish that a scheduled Fabric pipeline or Power BI
+                dataset refresh was deployed as part of the Databricks implementation.
+            </p>
+        </section>
+
+        <!-- 10. Business Value -->
+        <section>
+            <h2>10. Business Value</h2>
+            <ul>
+                <li>Provides a structured view of inventory, order, and shipment source data.</li>
+                <li>Improves data consistency through standardization and validation rules.</li>
+                <li>Makes rejected records visible for review rather than silently discarding them.</li>
+                <li>Creates reusable analytical tables for order and inventory reporting.</li>
+                <li>Establishes a foundation for supply chain KPIs and operational decision support.</li>
+            </ul>
+        </section>
+
+        <section class="project-footer">
+            <p><strong>Technologies:</strong> Python, PySpark, Spark SQL, Delta Tables, Medallion Architecture, Dimensional Modeling, Data Quality.</p>
+            <p><strong>Portfolio Demonstration:</strong> Synthetic Supply Chain Data</p>
+            <p style="text-align:center; margin-top:30px;">
+                <a href="../portfolio.html">Return to Portfolio</a>
+            </p>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>Created by Hernan | Supply Chain Analytics Portfolio</p>
+        </div>
+    </footer>
+
+</body>
+</html>
+
+
 
